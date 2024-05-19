@@ -1,6 +1,6 @@
 ﻿namespace Village_Develop
 {
-    partial class GameVisual
+    partial class GameForm
     {
         /// <summary>
         ///  Required designer variable.
@@ -36,7 +36,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1000, 600);
             FormBorderStyle = FormBorderStyle.FixedSingle;
-            Name = "GameVisual";
+            Name = "GameForm";
             Text = "Village Develop";
             ResumeLayout(false);
         }

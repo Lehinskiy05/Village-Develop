@@ -12,15 +12,17 @@ namespace Village_Develop.Model
         public readonly Point Position;
         public readonly Size Size;
         public readonly bool Collidable;
-        public Rectangle Bounds;
+        public Rectangle Bounds => new Rectangle(Position, Size);
+        public readonly Image Image;
+        
 
-        public Estate(string name, Point position, Size size, bool collidable)
+        public Estate(string name, Point position, Size size, bool collidable, Image image)
         {
             Name = name;
             Position = position;
             Size = size;
             Collidable = collidable;
-            Bounds = new Rectangle(Position, Size);
+            Image = image;
         }
     }
 }

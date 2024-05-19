@@ -10,17 +10,19 @@ namespace Village_Develop.Model
     {
         public Point Position { get; private set; }
         public readonly Size Size;
-        public Rectangle Bounds;
-        private Model model;
+        public Rectangle Bounds => new Rectangle(Position, Size);
+        public readonly Image Image;
+
+        private GameModel gameModel;
         private Map map;
 
-        public Player(Model model, Point position, Size size)
+        public Player(GameModel gameModel, Point position, Size size)
         {
             Position = position;
             Size = size;
-            Bounds = new Rectangle(Position, Size);
-            this.model = model;
-            map = model.Map;
+            this.gameModel = gameModel;
+            map = gameModel.Map;
+            Image = Image.FromFile("C:\\Users\\Пользователь\\source\\repos\\Village Develop\\Assets\\Textures\\player.png");
         }
 
         public void Move(Size step)
@@ -32,17 +34,18 @@ namespace Village_Develop.Model
 
             foreach (var building in map.Estates.Where(estate => estate.Collidable))
             {
-                if (nextBounds.IntersectsWith(building.Bounds))
-                    nextBounds.X = Position.X;
+                if (!nextBounds.IntersectsWith(building.Bounds))
+                    return;
+                nextBounds.X = Position.X;
 
-                if (nextBounds.IntersectsWith(building.Bounds))
-                {
-                    nextBounds.X = destination.X;
-                    nextBounds.Y = Position.Y;
-                }
+                if (!nextBounds.IntersectsWith(building.Bounds))
+                    return;
+                nextBounds.X = destination.X;
+                nextBounds.Y = Position.Y;
 
-                if (nextBounds.IntersectsWith(building.Bounds))
-                    nextBounds.Location = Position;
+                if (!nextBounds.IntersectsWith(building.Bounds))
+                    return;
+                nextBounds.Location = Position;
             }
         }
     }

@@ -15,7 +15,14 @@ namespace Village_Develop.Model
         public Map()
         {
             Size = new Size(1000, 600);
-            Estates = new List<Estate> { new Estate("Касса", new Point(310, 280), new Size(150, 100), true) };
+            Estates = new List<Estate>();
+            CreateEstates();
+        }
+
+        private void CreateEstates()
+        {
+            Estates.Add(new Estate("Касса", new Point(310, 280), new Size(150, 100), true,
+                Image.FromFile("C:\\Users\\Пользователь\\source\\repos\\Village Develop\\Assets\\Textures\\box_office.png")));
         }
 
         public Estate UnlockEstate()
