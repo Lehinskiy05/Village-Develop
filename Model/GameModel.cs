@@ -11,7 +11,9 @@ namespace Village_Develop.Model
     {
         public readonly Map Map;
         public readonly Player Player;
-        public readonly List<Customer> Customers;
+        public readonly List<Guest> Guests;
+        public int MaxGuestsCount;
+        private GameForm gameForm;
         private GameState _gameState;
 
         public GameState GameState
@@ -26,52 +28,24 @@ namespace Village_Develop.Model
 
         public event Action<GameState> GameStateChanged;
 
-        public event Action LeftKeyDown;
-        public event Action RightKeyDown;
-        public event Action UpKeyDown;
-        public event Action DownKeyDown;
-        public event Action EKeyDown;
-        public event Action QKeyDown;
 
-        public GameModel()
+        public GameModel(GameForm gameForm)
         {
-            Map = new Map();
-            Player = new Player(this, new Point(350, 430), new Size(25, 40));
-            Customers = new List<Customer>();
+            this.gameForm = gameForm;
+            Map = new Map(gameForm, this);
+            Player = new Player(this, this.gameForm);
+            Guests = new List<Guest>();
             _gameState = GameState.Game;
+            MaxGuestsCount = 3;
+
+            Guests.Add(new Guest(gameForm, this, 3));
         }
 
-        public void CloseGame()
+        public void Update(int delta)
         {
-            throw new NotImplementedException();
-        }
-
-        public void KeyDown(Keys key)
-        {
-            switch (key)
+            foreach (var guest in Guests)
             {
-                case Keys.A:
-                case Keys.Left:
-                    LeftKeyDown?.Invoke();
-                    break;
-                case Keys.D:
-                case Keys.Right:
-                    RightKeyDown?.Invoke();
-                    break;
-                case Keys.W:
-                case Keys.Up:
-                    UpKeyDown?.Invoke();
-                    break;
-                case Keys.S:
-                case Keys.Down:
-                    DownKeyDown?.Invoke();
-                    break;
-                case Keys.E:
-                    EKeyDown?.Invoke();
-                    break;
-                case Keys.Q:
-                    QKeyDown?.Invoke();
-                    break;
+                guest.Update(delta);
             }
         }
     }

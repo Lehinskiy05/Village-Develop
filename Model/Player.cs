@@ -8,45 +8,161 @@ namespace Village_Develop.Model
 {
     public class Player
     {
-        public Point Position { get; private set; }
-        public readonly Size Size;
-        public Rectangle Bounds => new Rectangle(Position, Size);
-        public readonly Image Image;
-
+        private GameForm gameForm;
         private GameModel gameModel;
         private Map map;
+        private double _x;
+        private double _y;
+        public Point Position => new Point((int)_x, (int)_y);
+        public Rectangle Bounds => new Rectangle(Position, Size);
+        public readonly Size Size;
+        private double speed;
+        public Dictionary<Resources, int> Inventory;
+        public Estate? InteractEstate;
 
-        public Player(GameModel gameModel, Point position, Size size)
+        public Player(GameModel gameModel, GameForm gameForm)
         {
-            Position = position;
-            Size = size;
+            this.gameForm = gameForm;
             this.gameModel = gameModel;
             map = gameModel.Map;
-            Image = Image.FromFile("C:\\Users\\Пользователь\\source\\repos\\Village Develop\\Assets\\Textures\\player.png");
+            (_x, _y) = (350, 430);
+            Size = new Size(25, 40);
+            speed = 10;
+            SetEvents();
+
+            Inventory = new();
+            foreach (var resource in (Resources[]) Enum.GetValues(typeof(Resources)))
+            {
+                Inventory[resource] = 0;
+            }
         }
 
-        public void Move(Size step)
+        private void SetEvents()
         {
-            Point destination = Position + step;
-            destination.X = Math.Min(Math.Max(0, destination.X), map.Size.Width);
-            destination.Y = Math.Min(Math.Max(0, destination.Y), map.Size.Height);
-            Rectangle nextBounds = new Rectangle(destination, Size);
-
-            foreach (var building in map.Estates.Where(estate => estate.Collidable))
+            gameForm.KeyDown += (sender, keyEventArgs) =>
             {
-                if (!nextBounds.IntersectsWith(building.Bounds))
-                    return;
+                var x = .0;
+                var y = .0;
+
+                switch (keyEventArgs.KeyCode)
+                {
+                    case Keys.W:
+                        y -= speed;
+                        break;
+                    case Keys.S:
+                        y += speed;
+                        break;
+                    case Keys.A:
+                        x -= speed;
+                        break;
+                    case Keys.D:
+                        x += speed;
+                        break;
+                    case Keys.E:
+                        Take();
+                        break;
+                    case Keys.Q:
+                        Give();
+                        break;
+                }
+
+                if (x != 0 && y != 0)
+                {
+                    x /= Math.Sqrt(2);
+                    y /= Math.Sqrt(2);
+                }
+
+                Move(x, y);
+            };
+        }
+
+        private void Give()
+        {
+            if (InteractEstate != null
+                && InteractEstate.Input != Resources.Nothing
+                && Inventory[InteractEstate.Input] > 0)
+            {
+                Inventory[InteractEstate.Input]--;
+                InteractEstate.Load();
+            }
+
+            gameForm.UpdateControls();
+        }
+
+        private void Take()
+        {
+            if (InteractEstate != null)
+            {
+                if (InteractEstate.Input == Resources.Nothing)
+                {
+                    Inventory[InteractEstate.Output]++;
+                }
+                else if (InteractEstate.OutputStorage > 0)
+                {
+                    InteractEstate.OutputStorage--;
+                    Inventory[InteractEstate.Output]++;
+                }
+
+                gameForm.UpdateControls();
+            }
+        }
+
+        public void Move(double dX, double dY)
+        {
+            var newX = _x + dX;
+            var newY = _y + dY;
+
+            newX = Math.Min(Math.Max(0, newX), map.Size.Width - this.Size.Width);
+            newY = Math.Min(Math.Max(0, newY), map.Size.Height - this.Size.Height);
+
+            Point destination = new Point((int)newX, (int)newY);
+            Rectangle nextBounds = new Rectangle(destination.X, destination.Y + 25, Size.Width, Size.Height - 25);
+
+            foreach (var estate in map.Estates.Where(estate => estate.Collidable))
+            {
+                if (!nextBounds.IntersectsWith(estate.Bounds))
+                    continue;
+                newX = _x;
                 nextBounds.X = Position.X;
 
-                if (!nextBounds.IntersectsWith(building.Bounds))
-                    return;
+
+                if (!nextBounds.IntersectsWith(estate.Bounds))
+                    continue;
+                newX = _x + dX;
                 nextBounds.X = destination.X;
+                newY = _y;
                 nextBounds.Y = Position.Y;
 
-                if (!nextBounds.IntersectsWith(building.Bounds))
-                    return;
+                if (!nextBounds.IntersectsWith(estate.Bounds))
+                    continue;
+                newX = _x;
                 nextBounds.Location = Position;
             }
+
+            _x = newX;
+            _y = newY;
+
+            gameForm.PlayerPictureBox.Left = Position.X;
+            gameForm.PlayerPictureBox.Top = Position.Y;
+
+            CheckInteraction();
+
+            gameForm.Text = "X: " + _x + ", Y: " + _y;
+        }
+
+        private void CheckInteraction()
+        {
+            foreach (var estate in map.Estates)
+            {
+                if (estate.InteractionBounds.IntersectsWith(Bounds))
+                {
+                    gameForm.InteractWith(estate);
+                    InteractEstate = estate;
+                    return;
+                }
+            }
+            InteractEstate = null;
+            gameForm.StopInteraction();
         }
     }
 }
