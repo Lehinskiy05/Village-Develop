@@ -1,5 +1,7 @@
 using System.Drawing.Printing;
+using System.Text;
 using Village_Develop.Model;
+using static System.Windows.Forms.AxHost;
 using Timer = System.Windows.Forms.Timer;
 
 namespace Village_Develop
@@ -8,37 +10,59 @@ namespace Village_Develop
     {
         private Graphics graphics;
         private GameModel gameModel;
-        private int fps;
-        private Timer fpsTimer;
-        private float cameraZoom;
+        private int FPS;
 
         public GameForm()
         {
             InitializeComponent();
-            gameModel = new GameModel();
+            DoubleBuffered = true;
+            gameModel = new GameModel(this);
             graphics = CreateGraphics();
-            cameraZoom = 1.0f;
+            FPS = 60;
+            BackColor = Color.Green;
+
+            UpdateInventory();
+
+            var timer = new Timer();
+            timer.Interval = 1000 / FPS;
+            timer.Tick += (sender, args) =>
+            {
+                gameModel.Update(timer.Interval);
+            };
+            timer.Start();
+        }
+
+        public void UpdateControls()
+        {
+            UpdateInventory();
+            UpdateInteraction();
+        }
+
+        private void UpdateInteraction()
+        {
+            var estate = gameModel.Player.InteractEstate;
+            if (estate != null)
+            {
+                EstateNameLabel.Text = estate.Name;
+                InputLabel.Text = estate.Input.ToFrendlyString();
+                OutputLabel.Text = estate.Output.ToFrendlyString();
+                InputStorageLabel.Text = estate.InputStorage.ToString();
+                OutputStorageLabel.Text = estate.OutputStorage.ToString();
+            }
+        }
+
+        public void UpdateInventory()
+        {
+            var newText = new StringBuilder();
+            foreach (var resource in (Resources[])Enum.GetValues(typeof(Resources)))
+            {
+                if (gameModel.Player.Inventory[resource] > 0)
+                    newText.Append(resource.ToFrendlyString() + ": " + gameModel.Player.Inventory[resource] + "  ");
+            }
+            InventoryLabel.Text = newText.ToString();
         }
 
         // Invalidate() запускает OnPaint
-        protected override void OnPaint(PaintEventArgs e)
-        {
-            base.OnPaint(e);
-
-            fps++;
-
-            var graphicsState = graphics.Save();
-
-            //var widthRatio = ClientSize.Width / (float)gameModel.Map.Size.Width * cameraZoom;
-            //var heightRatio = ClientSize.Height / (float)gameModel.Map.Size.Height * cameraZoom;
-
-            //graphics.ScaleTransform(widthRatio, heightRatio);
-            //graphics.Transform(...);
-
-            Draw();
-            
-            graphics.Restore(graphicsState);
-        }
 
         private void Draw()
         {
@@ -53,29 +77,48 @@ namespace Village_Develop
             BackColor = Color.Green;
         }
 
-        private void DrawEstates(List<Estate> estates)
+        private void DrawEstates(List<Estate> estates) { }
+        private void DrawPlayer(Player player) { }
+
+        public void InteractWith(Estate estate)
         {
-            foreach (Estate estate in estates)
+            EstateNameLabel.Text = estate.Name;
+            OutputLabel.Text = estate.Output.ToFrendlyString();
+            if (estate.Input != Resources.Nothing)
             {
-                graphics.DrawImage(estate.Image, estate.Bounds);
+                InputLabel.Text = estate.Input.ToFrendlyString();
+                InputStorageLabel.Text = estate.InputStorage.ToString();
+                OutputStorageLabel.Text = estate.OutputStorage.ToString();
             }
+
+            if (estate.Name == "Касса")
+                OutputStorageLabel.Text = estate.OutputStorage.ToString();
         }
 
-        private void DrawPlayer(Player player)
+        public void StopInteraction()
         {
-            graphics.DrawImage(player.Image, player.Bounds);
+            EstateNameLabel.Text = "";
+            InputLabel.Text = "";
+            OutputLabel.Text = "";
+            InputStorageLabel.Text = "";
+            OutputStorageLabel.Text = "";
         }
 
-        private void StartFpsCounterTimer()
+        public PictureBox CreateGuest(Guest guest)
         {
-            fpsTimer = new Timer();
-            fpsTimer.Interval = 1000;
-            fpsTimer.Tick += (sender, args) =>
-            {
-                Parent.Text = "Village Develop" + "   [FPS: " + fps + "]";
-                fps = 0;
-            };
-            fpsTimer.Start();
+            var pictureBox = new PictureBox();
+            GuestsPictureBoxes.Add(pictureBox);
+            ((System.ComponentModel.ISupportInitialize)pictureBox).BeginInit();
+
+            pictureBox.Image = Properties.Resources.player;
+            pictureBox.Location = guest.Position;
+            pictureBox.Name = "GuestPictureBox";
+            pictureBox.Size = new Size(25, 40);
+
+            Controls.Add(pictureBox);
+            ((System.ComponentModel.ISupportInitialize)pictureBox).EndInit();
+
+            return pictureBox;
         }
     }
 }
