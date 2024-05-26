@@ -9,20 +9,21 @@ namespace Village_Develop
     public partial class GameForm : Form
     {
         private GameModel gameModel;
-        private int FPS;
+        private int UpdateFrequency;
 
         public GameForm()
         {
             InitializeComponent();
+            GuestsPictureBoxes = new List<PictureBox>();
             DoubleBuffered = true;
             gameModel = new GameModel(this);
-            FPS = 60;
+            UpdateFrequency = 60;
             BackColor = Color.Green;
 
             UpdateInventory();
 
             var timer = new Timer();
-            timer.Interval = 1000 / FPS;
+            timer.Interval = 1000 / UpdateFrequency;
             timer.Tick += (sender, args) =>
             {
                 gameModel.Update(timer.Interval);
@@ -42,10 +43,17 @@ namespace Village_Develop
             if (estate != null)
             {
                 EstateNameLabel.Text = estate.Name;
-                InputLabel.Text = estate.Input.ToFrendlyString();
-                OutputLabel.Text = estate.Output.ToFrendlyString();
-                InputStorageLabel.Text = estate.InputStorage.ToString();
-                OutputStorageLabel.Text = estate.OutputStorage.ToString();
+                if (estate.Input != Resources.Nothing)
+                {
+                    InputLabel.Text = estate.Input.ToFrendlyString();
+                    InputStorageLabel.Text = estate.InputStorage.ToString();
+                }
+
+                if (estate.OutputStorage < 100000)
+                {
+                    OutputLabel.Text = estate.Output.ToFrendlyString();
+                    OutputStorageLabel.Text = estate.OutputStorage.ToString();
+                }
             }
         }
 
@@ -64,15 +72,7 @@ namespace Village_Develop
         {
             EstateNameLabel.Text = estate.Name;
             OutputLabel.Text = estate.Output.ToFrendlyString();
-            if (estate.Input != Resources.Nothing)
-            {
-                InputLabel.Text = estate.Input.ToFrendlyString();
-                InputStorageLabel.Text = estate.InputStorage.ToString();
-                OutputStorageLabel.Text = estate.OutputStorage.ToString();
-            }
-
-            if (estate.Name == "Касса")
-                OutputStorageLabel.Text = estate.OutputStorage.ToString();
+            UpdateControls();
         }
 
         public void StopInteraction()
@@ -90,7 +90,7 @@ namespace Village_Develop
             GuestsPictureBoxes.Add(pictureBox);
             ((System.ComponentModel.ISupportInitialize)pictureBox).BeginInit();
 
-            pictureBox.Image = Properties.Resources.player;
+            pictureBox.Image = Properties.Resources.npc;
             pictureBox.Location = guest.Position;
             pictureBox.Name = "GuestPictureBox";
             pictureBox.Size = new Size(25, 40);

@@ -26,8 +26,7 @@ namespace Village_Develop.Model
         public Point CheckPoint;
 
         public Rectangle Bounds => new Rectangle(Position, Size);
-        public Rectangle InteractionBounds => new Rectangle(Position.X - interactArea, Position.Y - interactArea,
-            Size.Width + interactArea * 2, Size.Height + interactArea * 2);
+        public Rectangle InteractionBounds;
 
 
         public Estate(GameForm gameForm,
@@ -58,6 +57,12 @@ namespace Village_Develop.Model
             OutputTimer.Tick += OnUnitDone;
             if (input == Resources.Nothing && output != Resources.Coin)
                 OutputStorage = int.MaxValue;
+
+            if (Collidable)
+                InteractionBounds = new Rectangle(Position.X - interactArea, Position.Y - interactArea,
+                    Size.Width + interactArea * 2, Size.Height + interactArea * 2);
+            else
+                InteractionBounds = Bounds;
         }
 
         public void Load()

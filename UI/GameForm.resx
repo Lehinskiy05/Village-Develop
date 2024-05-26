@@ -118,6 +118,16 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="PlayerPictureBox.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABkAAAAoCAYAAAALz1FrAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wQAADsEBuJFr7QAAAPhJREFUWEftkUEOwjAMBPsHTtz4Nm/iUSVGOHLcdWynBgmJkfZA8M4eugXZnZwC
+        CWdJcRDsjzsMuA0xlJAYRfVcUnIZ7pJkRj9EEi+y32KyPMBhB8kQ/QCVb9fLK9678EDMAcpXRqJhzzsH
+        fmeEwi6SatwR65voN3aRVNP/1CUKf2Ar8la4IOYIBckp+o49JET0A12MRjpaTPoRkswiuy0uQwEJdVQn
+        jC5GswQSWSmjXIgoHWFZNimQIJIUVin7PiUrs96nZGXW+xKlMov/SAoe+diQHJApQ0vlb347xUxWPoLg
+        /04NRSSRG5NMuWTEE2RuBzJF43bbntzmqa/zMiv1AAAAAElFTkSuQmCC
+</value>
+  </data>
   <data name="PitPictureBox.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAFAAAABQCAYAAACOEfKtAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO

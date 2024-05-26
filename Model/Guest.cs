@@ -43,7 +43,7 @@ namespace Village_Develop.Model
 
             Size = new Size(25, 40);
             (_x, _y) = (map.CheckPoints[1].X, map.CheckPoints[1].Y);
-            speed = 0.5;
+            speed = 0.1;
 
             MakeRandomPath();
 
@@ -102,8 +102,6 @@ namespace Village_Develop.Model
                     _x += (NextPoint.X - _x) / distance * delta * speed;
                     _y += (NextPoint.Y - _y) / distance * delta * speed;
                 }
-
-                gameForm.Text = Position + ", " + NextPoint;
 
                 pictureBox.Location = Position;
             }

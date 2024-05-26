@@ -32,7 +32,7 @@ namespace Village_Develop.Model
             LockedEstates = new Queue<Estate>();
             UnlockedEstates = new List<Estate>();
             AverageDemand = 1;
-            Stage = 1; // Потом 0
+            Stage = 0;
             UpgradesPrises = new List<int>{ 5, 10, 15, 20, 30, 40, 50, 70 };
 
             CreateCheckPoints();
@@ -40,17 +40,13 @@ namespace Village_Develop.Model
 
             UnlockedEstates.Add(Estates[0]);
             UnlockedEstates.Add(Estates[1]);
-            UnlockedEstates.Add(Estates[2]); // Потом убрать
 
-            foreach (var estate in Estates.Skip(3)) // 2
+            foreach (var estate in Estates.Skip(2))
             {
                 LockedEstates.Enqueue(estate);
             }
 
-            AvailableResources = new List<Resources>
-            {
-                { Resources.Board } // Потом убрать
-            };
+            AvailableResources = new List<Resources>();
         }
 
         private void CreateCheckPoints()
@@ -227,6 +223,12 @@ namespace Village_Develop.Model
                 Stage++;
                 AverageDemand++;
                 gameModel.Guests.Add(new Guest(gameForm, gameModel));
+                if (Stage < UpgradesPrises.Count)
+                    gameForm.UpgradeInfoLabel.Text = "Следующий апгрейд:\n" + UpgradesPrises[Stage] + " монет";
+                else
+                {
+                    gameForm.UpgradeInfoLabel.Text = "Конец";
+                }
             }
         }
 

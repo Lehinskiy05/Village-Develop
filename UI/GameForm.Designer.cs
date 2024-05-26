@@ -40,13 +40,14 @@
             TreesPictureBox = new PictureBox();
             WheatPictureBox = new PictureBox();
             GrapeTreePictureBox = new PictureBox();
-            GuestsPictureBoxes = new List<PictureBox>();
             InputLabel = new Label();
             OutputLabel = new Label();
             InputStorageLabel = new Label();
             EstateNameLabel = new Label();
             OutputStorageLabel = new Label();
             InventoryLabel = new Label();
+            Control = new Label();
+            UpgradeInfoLabel = new Label();
             ((System.ComponentModel.ISupportInitialize)PlayerPictureBox).BeginInit();
             ((System.ComponentModel.ISupportInitialize)CassPictureBox).BeginInit();
             ((System.ComponentModel.ISupportInitialize)SawmillPictureBox).BeginInit();
@@ -62,7 +63,7 @@
             // 
             // PlayerPictureBox
             // 
-            PlayerPictureBox.Image = Properties.Resources.player;
+            PlayerPictureBox.Image = (Image)resources.GetObject("PlayerPictureBox.Image");
             PlayerPictureBox.Location = new Point(350, 430);
             PlayerPictureBox.Name = "PlayerPictureBox";
             PlayerPictureBox.Size = new Size(25, 40);
@@ -81,7 +82,7 @@
             // SawmillPictureBox
             // 
             SawmillPictureBox.Image = Properties.Resources.sawmill;
-            SawmillPictureBox.Location = new Point(110, 290);
+            SawmillPictureBox.Location = new Point(110, 2900);
             SawmillPictureBox.Name = "SawmillPictureBox";
             SawmillPictureBox.Size = new Size(113, 100);
             SawmillPictureBox.TabIndex = 7;
@@ -164,60 +165,74 @@
             InputLabel.AutoSize = true;
             InputLabel.Location = new Point(784, 124);
             InputLabel.Name = "InputLabel";
-            InputLabel.Size = new Size(63, 15);
+            InputLabel.Size = new Size(0, 15);
             InputLabel.TabIndex = 15;
-            InputLabel.Text = "InputLabel";
             // 
             // OutputLabel
             // 
             OutputLabel.AutoSize = true;
             OutputLabel.Location = new Point(880, 124);
             OutputLabel.Name = "OutputLabel";
-            OutputLabel.Size = new Size(73, 15);
+            OutputLabel.Size = new Size(0, 15);
             OutputLabel.TabIndex = 16;
-            OutputLabel.Text = "OutputLabel";
             // 
             // InputStorageLabel
             // 
             InputStorageLabel.AutoSize = true;
             InputStorageLabel.Location = new Point(802, 157);
             InputStorageLabel.Name = "InputStorageLabel";
-            InputStorageLabel.Size = new Size(75, 15);
+            InputStorageLabel.Size = new Size(0, 15);
             InputStorageLabel.TabIndex = 17;
-            InputStorageLabel.Text = "StorageLabel";
             // 
             // EstateNameLabel
             // 
             EstateNameLabel.AutoSize = true;
             EstateNameLabel.Location = new Point(823, 54);
             EstateNameLabel.Name = "EstateNameLabel";
-            EstateNameLabel.Size = new Size(70, 15);
+            EstateNameLabel.Size = new Size(0, 15);
             EstateNameLabel.TabIndex = 18;
-            EstateNameLabel.Text = "EstateName";
             // 
             // OutputStorageLabel
             // 
             OutputStorageLabel.AutoSize = true;
             OutputStorageLabel.Location = new Point(899, 157);
             OutputStorageLabel.Name = "OutputStorageLabel";
-            OutputStorageLabel.Size = new Size(113, 15);
+            OutputStorageLabel.Size = new Size(0, 15);
             OutputStorageLabel.TabIndex = 19;
-            OutputStorageLabel.Text = "OutputStorageLabel";
             // 
             // InventoryLabel
             // 
             InventoryLabel.AutoSize = true;
             InventoryLabel.Location = new Point(28, 18);
             InventoryLabel.Name = "InventoryLabel";
-            InventoryLabel.Size = new Size(38, 15);
+            InventoryLabel.Size = new Size(0, 15);
             InventoryLabel.TabIndex = 20;
-            InventoryLabel.Text = "InventoryLabel";
+            // 
+            // Control
+            // 
+            Control.AutoSize = true;
+            Control.Location = new Point(868, 531);
+            Control.Name = "Control";
+            Control.Size = new Size(120, 45);
+            Control.TabIndex = 21;
+            Control.Text = "WASD - Управление \n Q/E - Отдать/взять \n Space - Upgrade";
+            // 
+            // UpgradeInfoLabel
+            // 
+            UpgradeInfoLabel.AutoSize = true;
+            UpgradeInfoLabel.Location = new Point(852, 280);
+            UpgradeInfoLabel.Name = "UpgradeInfoLabel";
+            UpgradeInfoLabel.Size = new Size(125, 30);
+            UpgradeInfoLabel.TabIndex = 22;
+            UpgradeInfoLabel.Text = "Следующий апгрейд:\n5 монет";
             // 
             // GameForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1000, 600);
+            Controls.Add(UpgradeInfoLabel);
+            Controls.Add(Control);
             Controls.Add(InventoryLabel);
             Controls.Add(OutputStorageLabel);
             Controls.Add(EstateNameLabel);
@@ -273,5 +288,8 @@
         public Label EstateNameLabel;
         public Label OutputStorageLabel;
         public Label InventoryLabel;
+        public Label Control;
+        public Font Font;
+        public Label UpgradeInfoLabel;
     }
 }

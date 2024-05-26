@@ -27,14 +27,16 @@ namespace Village_Develop.Model
             map = gameModel.Map;
             (_x, _y) = (350, 430);
             Size = new Size(25, 40);
-            speed = 10;
+            speed = 5;
             SetEvents();
 
             Inventory = new();
             foreach (var resource in (Resources[]) Enum.GetValues(typeof(Resources)))
             {
-                Inventory[resource] = 999999; // Вот бы в жизни так
+                Inventory[resource] = 0;
             }
+
+            Inventory[Resources.Coin] = 5;
         }
 
         private void SetEvents()
@@ -149,13 +151,12 @@ namespace Village_Develop.Model
             gameForm.PlayerPictureBox.Top = Position.Y;
 
             CheckInteraction();
-
-            // gameForm.Text = "X: " + _x + ", Y: " + _y;
+            gameForm.UpdateControls();
         }
 
         private void CheckInteraction()
         {
-            foreach (var estate in map.Estates)
+            foreach (var estate in map.UnlockedEstates)
             {
                 if (estate.InteractionBounds.IntersectsWith(Bounds))
                 {

@@ -12,21 +12,7 @@ namespace Village_Develop.Model
         public readonly Map Map;
         public readonly Player Player;
         public readonly List<Guest> Guests;
-        public int MaxGuestsCount;
         private GameForm gameForm;
-        private GameState _gameState;
-
-        public GameState GameState
-        {
-            get => _gameState;
-            set
-            {
-                _gameState = value;
-                GameStateChanged?.Invoke(value);
-            }
-        }
-
-        public event Action<GameState> GameStateChanged;
 
 
         public GameModel(GameForm gameForm)
@@ -35,10 +21,6 @@ namespace Village_Develop.Model
             Map = new Map(gameForm, this);
             Player = new Player(this, this.gameForm);
             Guests = new List<Guest>();
-            _gameState = GameState.Game;
-            MaxGuestsCount = 3;
-
-            Guests.Add(new Guest(gameForm, this));
         }
 
         public void Update(int delta)
