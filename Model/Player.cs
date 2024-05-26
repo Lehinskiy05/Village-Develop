@@ -147,7 +147,7 @@ namespace Village_Develop.Model
 
             CheckInteraction();
 
-            gameForm.Text = "X: " + _x + ", Y: " + _y;
+            // gameForm.Text = "X: " + _x + ", Y: " + _y;
         }
 
         private void CheckInteraction()

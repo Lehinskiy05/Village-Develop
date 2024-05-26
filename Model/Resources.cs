@@ -21,7 +21,7 @@ namespace Village_Develop.Model
         Nothing,
     }
 
-    public static class ResourcesExpression
+    public static class ResourcesExpressions
     {
         public static string ToFrendlyString(this Resources resource)
         {
@@ -40,6 +40,22 @@ namespace Village_Develop.Model
                 { Resources.Nothing, "Ничего" },
             };
             return ToFrendly[resource];
+        }
+
+        public static int GetPrice(this Resources resource)
+        {
+            Dictionary<Resources, int> ToPrice = new()
+            {
+                { Resources.Board, 2 },
+                { Resources.Chair, 4 },
+                { Resources.Water, 1 },
+                { Resources.Wheat, 2 },
+                { Resources.Flour, 4 },
+                { Resources.Bread, 6 },
+                { Resources.Grape, 5 },
+                { Resources.Wine, 10 },
+            };
+            return ToPrice[resource];
         }
     }
 }

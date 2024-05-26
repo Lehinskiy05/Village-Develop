@@ -8,7 +8,6 @@ namespace Village_Develop
 {
     public partial class GameForm : Form
     {
-        private Graphics graphics;
         private GameModel gameModel;
         private int FPS;
 
@@ -17,7 +16,6 @@ namespace Village_Develop
             InitializeComponent();
             DoubleBuffered = true;
             gameModel = new GameModel(this);
-            graphics = CreateGraphics();
             FPS = 60;
             BackColor = Color.Green;
 
@@ -62,24 +60,6 @@ namespace Village_Develop
             InventoryLabel.Text = newText.ToString();
         }
 
-        // Invalidate() запускает OnPaint
-
-        private void Draw()
-        {
-            DrawBackground(gameModel.Map.Size);
-            DrawEstates(gameModel.Map.Estates);
-            DrawPlayer(gameModel.Player);
-        }
-
-
-        private void DrawBackground(Size size)
-        {
-            BackColor = Color.Green;
-        }
-
-        private void DrawEstates(List<Estate> estates) { }
-        private void DrawPlayer(Player player) { }
-
         public void InteractWith(Estate estate)
         {
             EstateNameLabel.Text = estate.Name;
@@ -117,6 +97,8 @@ namespace Village_Develop
 
             Controls.Add(pictureBox);
             ((System.ComponentModel.ISupportInitialize)pictureBox).EndInit();
+            pictureBox.BringToFront();
+            PlayerPictureBox.BringToFront();
 
             return pictureBox;
         }

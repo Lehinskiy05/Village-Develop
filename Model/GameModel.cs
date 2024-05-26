@@ -38,7 +38,7 @@ namespace Village_Develop.Model
             _gameState = GameState.Game;
             MaxGuestsCount = 3;
 
-            Guests.Add(new Guest(gameForm, this, 3));
+            Guests.Add(new Guest(gameForm, this, 1));
         }
 
         public void Update(int delta)
@@ -46,6 +46,7 @@ namespace Village_Develop.Model
             foreach (var guest in Guests)
             {
                 guest.Update(delta);
+                gameForm.UpdateControls();
             }
         }
     }

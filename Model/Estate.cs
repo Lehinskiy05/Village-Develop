@@ -54,8 +54,10 @@ namespace Village_Develop.Model
             Output = output;
             PictureBox = pictureBox;
             interactArea = 15;
-            OutputTimer = new Timer { Interval = 1000 };
+            OutputTimer = new Timer { Interval = 200 };
             OutputTimer.Tick += OnUnitDone;
+            if (input == Resources.Nothing && output != Resources.Coin)
+                OutputStorage = int.MaxValue;
         }
 
         public void Load()
