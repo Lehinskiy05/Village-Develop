@@ -31,9 +31,9 @@ namespace Village_Develop.Model
             UnlockedEstates = new List<Estate>();
             LockedEstates = new Queue<Estate>();
             UnlockedEstates = new List<Estate>();
-            AverageDemand = 1;
+            AverageDemand = 2;
             Stage = 0;
-            UpgradesPrises = new List<int>{ 5, 10, 15, 20, 30, 40, 50, 70 };
+            UpgradesPrises = new List<int>{ 5, 10, 15, 25, 40, 60, 80, 100 };
 
             CreateCheckPoints();
             CreateEstates();
@@ -169,6 +169,8 @@ namespace Village_Develop.Model
         public List<Point> DijkstraAlgorithm(Point start, Point? end)
         {
             {
+                if (start == end)
+                    return new List<Point> { start };
                 var notVisited = new List<Point>(CheckPoints);
                 var track = new Dictionary<Point, DijkstraData>();
                 track[start] = new DijkstraData { Price = 0, Previous = null };

@@ -220,7 +220,7 @@
             // UpgradeInfoLabel
             // 
             UpgradeInfoLabel.AutoSize = true;
-            UpgradeInfoLabel.Location = new Point(852, 280);
+            UpgradeInfoLabel.Location = new Point(863, 280);
             UpgradeInfoLabel.Name = "UpgradeInfoLabel";
             UpgradeInfoLabel.Size = new Size(125, 30);
             UpgradeInfoLabel.TabIndex = 22;
