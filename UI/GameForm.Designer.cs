@@ -90,7 +90,7 @@
             // CarpentryPictureBox
             // 
             CarpentryPictureBox.Image = Properties.Resources.carpentry;
-            CarpentryPictureBox.Location = new Point(126, 96);
+            CarpentryPictureBox.Location = new Point(126, 960);
             CarpentryPictureBox.Name = "CarpentryPictureBox";
             CarpentryPictureBox.Size = new Size(113, 100);
             CarpentryPictureBox.TabIndex = 6;
@@ -99,7 +99,7 @@
             // WineryPictureBox
             // 
             WineryPictureBox.Image = Properties.Resources.winery;
-            WineryPictureBox.Location = new Point(350, 82);
+            WineryPictureBox.Location = new Point(350, 820);
             WineryPictureBox.Name = "WineryPictureBox";
             WineryPictureBox.Size = new Size(113, 100);
             WineryPictureBox.TabIndex = 5;
@@ -108,7 +108,7 @@
             // BakeryPictureBox
             // 
             BakeryPictureBox.Image = Properties.Resources.Bakery;
-            BakeryPictureBox.Location = new Point(749, 290);
+            BakeryPictureBox.Location = new Point(749, 2900);
             BakeryPictureBox.Name = "BakeryPictureBox";
             BakeryPictureBox.Size = new Size(113, 100);
             BakeryPictureBox.TabIndex = 4;
@@ -117,7 +117,7 @@
             // MillPitureBox
             // 
             MillPitureBox.Image = Properties.Resources.mill;
-            MillPitureBox.Location = new Point(734, 462);
+            MillPitureBox.Location = new Point(734, 4620);
             MillPitureBox.Name = "MillPitureBox";
             MillPitureBox.Size = new Size(113, 100);
             MillPitureBox.TabIndex = 14;
@@ -126,7 +126,7 @@
             // PitPictureBox
             // 
             PitPictureBox.Image = (Image)resources.GetObject("PitPictureBox.Image");
-            PitPictureBox.Location = new Point(560, 310);
+            PitPictureBox.Location = new Point(560, 3100);
             PitPictureBox.Name = "PitPictureBox";
             PitPictureBox.Size = new Size(80, 80);
             PitPictureBox.TabIndex = 13;
@@ -144,7 +144,7 @@
             // WheatPictureBox
             // 
             WheatPictureBox.Image = (Image)resources.GetObject("WheatPictureBox.Image");
-            WheatPictureBox.Location = new Point(489, 430);
+            WheatPictureBox.Location = new Point(489, 4300);
             WheatPictureBox.Name = "WheatPictureBox";
             WheatPictureBox.Size = new Size(200, 160);
             WheatPictureBox.TabIndex = 11;
@@ -153,7 +153,7 @@
             // GrapeTreePictureBox
             // 
             GrapeTreePictureBox.Image = (Image)resources.GetObject("GrapeTreePictureBox.Image");
-            GrapeTreePictureBox.Location = new Point(549, 63);
+            GrapeTreePictureBox.Location = new Point(549, 630);
             GrapeTreePictureBox.Name = "GrapeTreePictureBox";
             GrapeTreePictureBox.Size = new Size(140, 160);
             GrapeTreePictureBox.TabIndex = 10;

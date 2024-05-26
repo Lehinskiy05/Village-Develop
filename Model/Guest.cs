@@ -26,12 +26,12 @@ namespace Village_Develop.Model
         public int LocalDemand;
         private Random random;
 
-        public Guest(GameForm gameForm, GameModel gameModel, int totalDemand)
+        public Guest(GameForm gameForm, GameModel gameModel)
         {
             this.gameForm = gameForm;
             this.gameModel = gameModel;
             map = gameModel.Map;
-            TotalDemand = totalDemand;
+            TotalDemand = map.AverageDemand;
             random = new Random();
             Path = new Queue<Point>();
             Inventory = new Dictionary<Resources, int>();
@@ -43,7 +43,7 @@ namespace Village_Develop.Model
 
             Size = new Size(25, 40);
             (_x, _y) = (map.CheckPoints[1].X, map.CheckPoints[1].Y);
-            speed = 0.2;
+            speed = 0.5;
 
             MakeRandomPath();
 
@@ -55,7 +55,7 @@ namespace Village_Develop.Model
 
             Path.Enqueue(Position);
 
-            Destination = map.GetEstate(map.AvailableResources[random.Next(map.AvailableResources.Count - 1)]);
+            Destination = map.GetEstate(map.AvailableResources[random.Next(map.AvailableResources.Count)]);
             var pointList = map.DijkstraAlgorithm(Position, Destination.CheckPoint);
 
             foreach (var point in pointList)
@@ -119,9 +119,14 @@ namespace Village_Develop.Model
                     MakePathTo(map.CheckPoints[1]);
                     IsWait = false;
                 }
-                else if (Position == map.CheckPoints[1]) // вне карты
+                else if (Position == map.CheckPoints[1])
                 {
-                    // По новой
+                    TotalDemand = map.AverageDemand;
+                    foreach (var item in Inventory.Keys)
+                    {
+                        Inventory[item] = 0;
+                    }
+                    MakeRandomPath();
                 }
                 else
                 {

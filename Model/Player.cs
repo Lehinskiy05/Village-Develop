@@ -33,7 +33,7 @@ namespace Village_Develop.Model
             Inventory = new();
             foreach (var resource in (Resources[]) Enum.GetValues(typeof(Resources)))
             {
-                Inventory[resource] = 0;
+                Inventory[resource] = 999999; // Вот бы в жизни так
             }
         }
 
@@ -64,6 +64,9 @@ namespace Village_Develop.Model
                     case Keys.Q:
                         Give();
                         break;
+                    case Keys.Space:
+                        map.Upgrade();
+                        break;
                 }
 
                 if (x != 0 && y != 0)
@@ -93,7 +96,7 @@ namespace Village_Develop.Model
         {
             if (InteractEstate != null)
             {
-                if (InteractEstate.Input == Resources.Nothing)
+                if (InteractEstate.Input == Resources.Nothing && InteractEstate.Output != Resources.Coin)
                 {
                     Inventory[InteractEstate.Output]++;
                 }
@@ -118,7 +121,7 @@ namespace Village_Develop.Model
             Point destination = new Point((int)newX, (int)newY);
             Rectangle nextBounds = new Rectangle(destination.X, destination.Y + 25, Size.Width, Size.Height - 25);
 
-            foreach (var estate in map.Estates.Where(estate => estate.Collidable))
+            foreach (var estate in map.UnlockedEstates.Where(estate => estate.Collidable))
             {
                 if (!nextBounds.IntersectsWith(estate.Bounds))
                     continue;

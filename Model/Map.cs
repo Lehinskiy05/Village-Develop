@@ -18,6 +18,9 @@ namespace Village_Develop.Model
         public List<Point> CheckPoints;
         public Dictionary<Point, List<Point>> Ways;
         public List<Resources> AvailableResources;
+        public int AverageDemand;
+        public int Stage;
+        public List<int> UpgradesPrises;
 
         public Map(GameForm gameForm, GameModel gameModel)
         {
@@ -28,32 +31,26 @@ namespace Village_Develop.Model
             UnlockedEstates = new List<Estate>();
             LockedEstates = new Queue<Estate>();
             UnlockedEstates = new List<Estate>();
+            AverageDemand = 1;
+            Stage = 1; // Потом 0
+            UpgradesPrises = new List<int>{ 5, 10, 15, 20, 30, 40, 50, 70 };
 
             CreateCheckPoints();
             CreateEstates();
 
             UnlockedEstates.Add(Estates[0]);
             UnlockedEstates.Add(Estates[1]);
-            UnlockedEstates.Add(Estates[2]);
+            UnlockedEstates.Add(Estates[2]); // Потом убрать
 
-            foreach (var estate in Estates.Skip(3))
+            foreach (var estate in Estates.Skip(3)) // 2
             {
                 LockedEstates.Enqueue(estate);
             }
 
             AvailableResources = new List<Resources>
             {
-                { Resources.Board },
-                { Resources.Chair },
-                { Resources.Wheat },
-                { Resources.Flour },
-                { Resources.Bread },
-                { Resources.Wine },
+                { Resources.Board } // Потом убрать
             };
-
-            // Потом убрать
-            //while (LockedEstates.Count > 0)
-            //    UnlockEstate();
         }
 
         private void CreateCheckPoints()
@@ -168,14 +165,6 @@ namespace Village_Develop.Model
                 Resources.Grape, Resources.Wine, gameForm.WineryPictureBox));
         }
 
-        public void UnlockEstate()
-        {
-            Estate estate = LockedEstates.Dequeue();
-            Estates.Add(estate);
-            estate.PictureBox.Left = estate.Position.X;
-            estate.PictureBox.Top = estate.Position.Y;
-        }
-
         public double GetDistance(double x1, double y1, double x2, double y2)
         {
             return Math.Sqrt(Math.Pow(x1 - x2, 2) + Math.Pow(y1 - y2, 2));
@@ -225,6 +214,33 @@ namespace Village_Develop.Model
                 }
                 result.Reverse();
                 return result;
+            }
+        }
+
+        public void Upgrade()
+        {
+            if (Stage < UpgradesPrises.Count && gameModel.Player.Inventory[Resources.Coin] >= UpgradesPrises[Stage])
+            {
+                UnlockEstate();
+
+                gameModel.Player.Inventory[Resources.Coin] -= UpgradesPrises[Stage];
+                Stage++;
+                AverageDemand++;
+                gameModel.Guests.Add(new Guest(gameForm, gameModel));
+            }
+        }
+
+        public void UnlockEstate()
+        {
+            Estate estate = LockedEstates.Dequeue();
+            UnlockedEstates.Add(estate);
+            estate.PictureBox.Left = estate.Position.X;
+            estate.PictureBox.Top = estate.Position.Y;
+
+            AvailableResources.Add(estate.Output);
+            foreach (var guest in gameModel.Guests)
+            {
+                guest.Inventory[estate.Output] = 0;
             }
         }
     }
